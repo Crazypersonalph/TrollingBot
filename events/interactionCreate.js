@@ -1,6 +1,6 @@
 import { Events } from "discord.js";
 
-module.exports = {
+export default {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
 		if (!interaction.isChatInputCommand()) return;
@@ -13,7 +13,7 @@ module.exports = {
 		}
 
 		try {
-			await command.execute(interaction);
+			await command.default.execute(interaction);
 		} catch (error) {
 			console.error(error);
 			if (interaction.replied || interaction.deferred) {
