@@ -15,7 +15,7 @@ export default {
 		const user = interaction.options.getUser('user');
 
 		const member = interaction.guild.members.cache.get(user.id);
-		await member.untimeout();
+		await member.timeout(null, 'Unmuted');
 		await interaction.reply(`Unmuted ${user}`);
 	},
 }

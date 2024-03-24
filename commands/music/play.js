@@ -24,9 +24,10 @@ export default {
 		const user = interaction.user.id;
 		const member = interaction.guild.members.cache.get(user);
 		const connection = joinVoiceChannel({
-			channelId: member.voice.channelId,
+			channelId: member.voice.channel.id,
 			guildId: member.voice.guild.id,
 			adapterCreator: member.voice.guild.voiceAdapterCreator,
+			selfDeaf: false,
 		});
 		const player = createAudioPlayer();
 		const resource = await probeAndCreateResource(stream);

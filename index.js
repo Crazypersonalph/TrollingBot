@@ -4,15 +4,12 @@ import fs from 'node:fs'
 import path from 'node:path'
 import 'dotenv/config';
 const token = process.env.DISCORD_TOKEN
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-const __dirname = fileURLToPath(dirname(import.meta.url));
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 
 client.commands = new Collection()
 
-const foldersPath = path.join(__dirname, 'commands');
+const foldersPath = path.join('./', 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
@@ -20,7 +17,7 @@ for (const folder of commandFolders) {
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
-		const command = import(filePath);
+		const command = import('./'+filePath);
 		const commandresult = command.then((result) => {
 			if (result.default.data && result.default.execute) {
 
@@ -36,12 +33,12 @@ for (const folder of commandFolders) {
 	}
 }
 
-const eventsPath = path.join(__dirname, 'events');
+const eventsPath = path.join('./', 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
-	const event = import(filePath);
+	const event = import('./' + filePath);
 	event.then((result) => {
 
 		if (result.default.once) {

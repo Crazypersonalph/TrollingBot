@@ -6,14 +6,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-const __dirname = fileURLToPath(dirname(import.meta.url));
-
-
 const commands = [];
 // Grab all the command folders from the commands directory you created earlier
-const foldersPath = path.join(__dirname, 'commands');
+const foldersPath = path.join('./', 'commands')
 const commandFolders = fs.readdirSync(foldersPath);
 
 
@@ -25,7 +20,7 @@ for (const folder of commandFolders) {
 
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
-		const command = import(filePath);
+		const command = import('./'+filePath);
 		const commandresult = command.then((result) => {
 			if (result.default.data && result.default.execute) {
 

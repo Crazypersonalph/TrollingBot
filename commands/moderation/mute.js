@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { PermissionFlagsBits } from 'discord.js';
+import ms from 'ms';
 
 export default {
     data: new SlashCommandBuilder()
@@ -21,6 +22,7 @@ export default {
 
 	async execute(interaction) {
 		const user = interaction.options.getUser('user');
+		try {
 		let reason;
 		const time = interaction.options.getString('time');
 
@@ -36,5 +38,10 @@ export default {
 		}
 		await member.timeout(timeinMs, reason);
 		await interaction.reply(`Muted (timed-out) ${user} for reason ${reason} and for ${time} long`);
+		}
+		catch (error) {
+			console.log(error)
+			await interaction.reply('<@'+user+'>' + ' has a higher role than you (or you entered an input wrong)');
+		}
 	},
 }

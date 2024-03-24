@@ -17,6 +17,7 @@ export default {
 				.setRequired(false)),
 	async execute(interaction) {
 		const user = interaction.options.getUser('user');
+		try{
 		let reason;
 		if (interaction.options.getString('reason') == '') {
 			reason = 'No reason specified';
@@ -27,5 +28,9 @@ export default {
 		}
 		await interaction.guild.members.kick(user);
 		await interaction.reply(`Kicked ${user} for ${reason}`);
+	}
+	catch (error) {
+		await interaction.reply('<@'+user+'>' + ' has a higher role than you (or you entered an input wrong)');
+	}
 	},
 }
